@@ -1,0 +1,42 @@
+TODO list for daisywheel project
+
+-Add SHIFT, CTRL, ALT, and CAPSLOCK keys, along with any other toggles
+-Implement better GUI
+-Expand available keys
+
+
+-Add mouse capability
+ -Mouse currently functions in one-movement intervals, but has full mouse functionality.
+ -Need to fix RY issue (see footnote)
+ -Need to prevent other events from triggering mouse movement
+ -Need to fix loop so mouse moves until button is released. Timer function an option?
+ -Lag within mouse movement. May be caused by other issues, so those should be fixed first.
+
+-Add settings menu
+ -Mouse speed
+ -Terminal font size(?)
+ -Additional keys(Accents, etc)(?)
+
+-Add threading capability to mouse code
+ -Intended to solve mouse movement issues
+ -Could also be used to make scrolling through menus easier
+ -Remember to set any threads independent of the exit-capable thread as daemons
+
+
+ISSUES:
+
+-RY Issue
+ -The right stick is sending out massive amounts of noise that's screwing with everything else
+ (triggering get_gamepad() almost constantly which triggers things that shouldn't be triggered
+ (See Mouse movement loop)). Is even triggered by the entire controller being rotated or slowly flipped over.
+
+-Mouse movement loop
+ -Currently, get_gamepad() always pauses the mouse movement loop. However, without get_gamepad(),
+  there wouldn't be any updates to stop the loop at the proper time. Solution in other projects was
+  to make a timer that called the movement function so long as a variable was true. This may be an option here.
+ -Currently, any other event occuring while the movement button is held down will cause the cursor to continue until all
+  events have been resolved. May be solved if an "if not foo: pass" statement is called within "for event in self.events".
+
+-Mouse lag
+ -Currently, the mouse movement is jerky and random when held down. RY and Loop issues may be the cause, and may be giving
+  false information under other circumstances. Those two issues should be resolved before this one is inspected.
